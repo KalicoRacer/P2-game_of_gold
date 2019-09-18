@@ -28,6 +28,18 @@ connect_args={'check_same_thread': False}
 )
 conn = engine.connect()
 
+# This is the grouping used for identifying the top 20 countries that we will be using for most of our visuals
+df_medalCount = pd.read_sql_query("select code, country, cast(population as double) Population, \
+        round(gdp_per_capita,0) GDP, count(*) TotalAthletes, \
+        sum(gold) Gold, sum(silver) Silver, sum(bronze) Bronze \
+        from athletes A inner join countries C on A.nationality = C.code \
+        group by code, country, population, GDP", conn)
+df_medalCount['Total'] = df_medalCount["Gold"] + df_medalCount["Silver"] + df_medalCount["Bronze"]
+df_medalCount.sort_values(by=['Total'], ascending=False, inplace = True)
+dfTop20 = df_medalCount.nlargest(20, 'Total')
+dfTop20.to_csv(r'C:\Users\tepa7\Desktop\HW\P2-game_of_gold\Top20.csv')
+
+# This is the df that Tharunya will be working on
 Tharunya_athletes = pd.read_sql_query("select nationality,sum(gold) Gold, sum(silver) Silver, sum(bronze) Bronze,\
 sum(gold) + sum(silver) + sum(Bronze) Totals from athletes \
 group by nationality having sum(gold) + sum(silver) + sum(Bronze) > 50 \
@@ -40,30 +52,28 @@ def index():
 
 @app.route("/CountryMedals")
 def CountryMedals():
-    df_list = Tharunya_athletes.values.tolist()
-    df_json = jsonify(df_list)
-    return df_json
+    # df_list = Tharunya_athletes.values.tolist()
+    # df_json = jsonify(df_list)
+    df_json2 = Tharunya_athletes.to_json()
+    countries = []
+    for c in cc:
+        country = {'country_full_name': c[''], '': }
+        countries.append(county)
+    return jsonify(countries)
+
+    # return df_json
 
 @app.route("/countries")
 def names():
     """Return a list of sample names."""
-    df_medalCount = pd.read_sql_query("select code, country, sum(gold) Gold, sum(silver) Silver, sum(bronze) Bronze \
-                       from athletes A inner join countries C on A.nationality = C.code \
-                       group by code, country", conn)
-    df_medalCount['Total'] = df_medalCount["Gold"] + df_medalCount["Silver"] + df_medalCount["Bronze"]
-    df_medalCount.sort_values(by=['Total'], ascending=False, inplace = True)
-    df = df_medalCount.nlargest(20, 'Total')
-    #You can display data either way, one as list or one as dictionary, whichever way you prefer
-    # or you can create different way of displaying data depend on how you want but 
-    #main thing you need to turn it into json
     
-    df_list = df.values.tolist()
+    df_countries = dfTop20.values.tolist()
     countries = []
-    length = len(df_list)
+    length = len(df_countries)
     i = 0
     
     for i in range(20):
-        countries.append(df_list[i][0])
+        countries.append(df_countries[i][0])
         i += 1
 
     df_json = jsonify(countries)
@@ -72,19 +82,6 @@ def names():
     # df_json2 = df.to_json()
     # return df_json2    
 
-@app.route("/medalCounts")
-def medalCounts():
-    """Return a list of sample names."""
-    df_medalCount = pd.read_sql_query("select code, country, sum(gold) Gold, sum(silver) Silver, sum(bronze) Bronze \
-                       from athletes A inner join countries C on A.nationality = C.code \
-                       group by code, country", conn)
-    df_medalCount['Total'] = df_medalCount["Gold"] + df_medalCount["Silver"] + df_medalCount["Bronze"]
-    df_medalCount.sort_values(by=['Total'], ascending=False, inplace = True)
-    df = df_medalCount.nlargest(20, 'Total')
-
-    df_list = df.values.tolist()
-    df_json = jsonify(df_list)
-    return df_json
     
 if __name__ == '__main__':
     app.run(debug=True)
