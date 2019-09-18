@@ -23,15 +23,26 @@ app = Flask(__name__)
 # ​
 #Use This connection 2 line below rather than the above connection way
 engine = create_engine(
-'sqlite:///gold_blooded.sqlite',
+'sqlite:///../data/gold_blooded.sqlite',
 connect_args={'check_same_thread': False}
 )
 conn = engine.connect()
+
+Tharunya_athletes = pd.read_sql_query("select nationality,sum(gold) Gold, sum(silver) Silver, sum(bronze) Bronze,\
+sum(gold) + sum(silver) + sum(Bronze) Totals from athletes \
+group by nationality having sum(gold) + sum(silver) + sum(Bronze) > 50 \
+order by Totals desc",conn)
 
 @app.route("/")
 def index():
     """Return the homepage."""
     return "hello"
+
+@app.route("/CountryMedals")
+def CountryMedals():
+    df_list = Tharunya_athletes.values.tolist()
+    df_json = jsonify(df_list)
+    return df_json
 
 @app.route("/countries")
 def names():
@@ -70,16 +81,10 @@ def medalCounts():
     df_medalCount['Total'] = df_medalCount["Gold"] + df_medalCount["Silver"] + df_medalCount["Bronze"]
     df_medalCount.sort_values(by=['Total'], ascending=False, inplace = True)
     df = df_medalCount.nlargest(20, 'Total')
-    #You can display data either way, one as list or one as dictionary, whichever way you prefer
-    # or you can create different way of displaying data depend on how you want but 
-    #main thing you need to turn it into json
-    
-    #way 1 
+
     df_list = df.values.tolist()
     df_json = jsonify(df_list)
     return df_json
-    #way2
-    # df_json2 = df.to_json()
-    # return df_json2
+    
 if __name__ == '__main__':
     app.run(debug=True)
