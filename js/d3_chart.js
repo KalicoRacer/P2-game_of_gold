@@ -91,7 +91,6 @@ function renderCircleText(circlesText, newXScale, chosenXAxis, newYScale, chosen
 
 }
 
-/*
 // function used for updating circles group with new tooltip
 function updateToolTip(chosenXAxis, chosenYAxis, circlesText) {
 
@@ -141,7 +140,6 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesText) {
         });
     return circlesText;
 }
-*/
 
 // Retrieve and parse data from the CSV file and execute everything below
 d3.csv("data/medalsData.csv").then(function(medalsData) {
