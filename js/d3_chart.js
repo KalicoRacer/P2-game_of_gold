@@ -28,22 +28,22 @@ var chosenXAxis = "athletes";
 var chosenYAxis = "total_medals";
 
 // function used for updating x-scale var upon click on axis label
-function xScale(stateData, chosenXAxis) {
+function xScale(medalsData, chosenXAxis) {
     // create scales
     var xLinearScale = d3.scaleLinear()
-        .domain([d3.min(stateData, d => d[chosenXAxis]) * 0.8,
-            d3.max(stateData, d => d[chosenXAxis]) * 1.2
+        .domain([d3.min(medalsData, d => d[chosenXAxis]) * 0.8,
+            d3.max(medalsData, d => d[chosenXAxis]) * 1.2
         ])
         .range([0, width]);
     return xLinearScale;
 }
 
 // function used for updating y-scale var upon click on axis label
-function yScale(stateData, chosenYAxis) {
+function yScale(medalsData, chosenYAxis) {
     // create scales
     var yLinearScale = d3.scaleLinear()
-        .domain([d3.min(stateData, d => d[chosenYAxis]) * 0.8,
-            d3.max(stateData, d => d[chosenYAxis]) * 1.2
+        .domain([d3.min(medalsData, d => d[chosenYAxis]) * 0.8,
+            d3.max(medalsData, d => d[chosenYAxis]) * 1.2
         ])
         .range([height, 0]);
     return yLinearScale;
@@ -80,7 +80,7 @@ function renderCircles(circlesGroup, newXScale, chosenXAxis, newYScale, chosenYA
     return circlesGroup;
 }
 
-// function used for moving State abbreviation labels along with circles
+// function used for moving country abbreviation labels along with circles
 function renderCircleText(circlesText, newXScale, chosenXAxis, newYScale, chosenYAxis) {
 
     circlesText.transition()
@@ -91,6 +91,7 @@ function renderCircleText(circlesText, newXScale, chosenXAxis, newYScale, chosen
 
 }
 
+/*
 // function used for updating circles group with new tooltip
 function updateToolTip(chosenXAxis, chosenYAxis, circlesText) {
 
@@ -126,7 +127,7 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesText) {
         .attr("class", "tooltip")
         .offset([80, -60])
         .html(function(d) {
-            return (`${d.state}<br>${xlabel} ${xformat(d[chosenXAxis])}${xsuffix}<br>${ylabel} ${d[chosenYAxis]}%`);
+            return (`${d.country}<br>${xlabel} ${xformat(d[chosenXAxis])}${xsuffix}<br>${ylabel} ${d[chosenYAxis]}%`);
         });
 
     circlesText.call(toolTip);
@@ -140,28 +141,28 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesText) {
         });
     return circlesText;
 }
+*/
 
 // Retrieve and parse data from the CSV file and execute everything below
-d3.csv("data/stateData.csv").then(function(stateData) {
-    stateData.forEach(function(data) {
+d3.csv("data/medalsData.csv").then(function(medalsData) {
+    medalsData.forEach(function(data) {
         data.id = +data.id;
-        data.state = data.state;
-        data.abbr = data.abbr;
+        data.country = data.country;
+        data.code = data.code;
         data.athletes = +data.athletes;
         data.population = +data.population;
         data.gdp = +data.gdp;
         data.total_medals = +data.total_medals;
-        data.obesity = +data.obesity;
-        data.obesityLow = +data.obesityLow;
-        data.obesityHigh = +data.obesityHigh;
         data.gold = +data.gold;
+        data.silver = +data.silver;
+        data.bronze = +data.bronze;
     });
 
     // xLinearScale function above csv import
-    var xLinearScale = xScale(stateData, chosenXAxis);
+    var xLinearScale = xScale(medalsData, chosenXAxis);
 
     // Create y scale function
-    var yLinearScale = yScale(stateData, chosenYAxis);
+    var yLinearScale = yScale(medalsData, chosenYAxis);
 
     // Create initial axis functions
     var bottomAxis = d3.axisBottom(xLinearScale);
@@ -180,26 +181,26 @@ d3.csv("data/stateData.csv").then(function(stateData) {
 
     // append initial circles
     var circlesGroup = chartGroup.selectAll("circle")
-        .data(stateData)
+        .data(medalsData)
         .enter()
         .append("circle")
         .attr("cx", d => xLinearScale(d[chosenXAxis]))
         .attr("cy", d => yLinearScale(d[chosenYAxis]))
         .attr("r", 15)
-        .attr("class", "stateCircle")
+        .attr("class", "countryCircle")
         .attr("opacity", ".75");
 
     // append initial circle text
     var circlesText = chartGroup.selectAll("circlesGroup")
-        .data(stateData)
+        .data(medalsData)
         .enter()
         .append("text")
-        .text(function(data) {return data.abbr})
+        .text(function(data) {return data.code})
         .attr("x", d => xLinearScale(d[chosenXAxis]))
         .attr("y", d => yLinearScale(d[chosenYAxis]))
         .attr("dy", ".35em")
         .attr("text-anchor", "middle")
-        .attr("class", "stateText");
+        .attr("class", "countryText");
 
     // Create group for 2 x-axis labels
     var xLabelsGroup = chartGroup.append("g")
@@ -269,7 +270,7 @@ d3.csv("data/stateData.csv").then(function(stateData) {
 
             // functions here found above csv import
             // updates x scale for new data
-            xLinearScale = xScale(stateData, chosenXAxis);
+            xLinearScale = xScale(medalsData, chosenXAxis);
 
             // updates x axis with transition
             xAxis = renderXAxes(xLinearScale, xAxis);
@@ -332,7 +333,7 @@ d3.csv("data/stateData.csv").then(function(stateData) {
 
             // functions here found above csv import
             // updates x scale for new data
-            yLinearScale = yScale(stateData, chosenYAxis);
+            yLinearScale = yScale(medalsData, chosenYAxis);
 
             // updates y axis with transition
             yAxis = renderYAxes(yLinearScale, yAxis);
