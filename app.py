@@ -41,6 +41,9 @@ df_gender = pd.read_sql_query("select nationality, sex,count(*) TotCountry from 
     group by nationality, sex", conn)    
 df_bmi = pd.read_sql_query("select nationality, weight/(height* height) BMI, gold + silver + bronze as TotalMedals \
     from Athletes where gold + silver + bronze > 0 and height > 0 and weight > 0", conn)
+df_bmi_grouped = pd.read_sql_query("select round(weight/(height* height),0) BMI, sum(gold) + sum(silver) + sum(bronze) as TotalMedals \
+    from Athletes where gold + silver + bronze > 0 and height > 0 and weight > 0 \
+    group by weight/(height* height)", conn)
 
 
 # dfTop20.to_csv(r'C:\Users\tepa7\Desktop\HW\P2-game_of_gold\Top20.csv')
@@ -102,7 +105,7 @@ def gender():
 
 @app.route("/bmi")
 def bmi():
-    df_list = df_bmi.values.tolist()
+    df_list = df_bmi_grouped.values.tolist()
     df_json = jsonify(df_list)
     return df_json
     
