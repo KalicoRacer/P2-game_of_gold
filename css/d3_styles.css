@@ -24,14 +24,14 @@
 }
 
 /* font size dependent on radius, see app.js */
-.stateText {
+.countryText {
   font-family: sans-serif;
   font-size: 10px;
   fill: #fff;
   text-anchor: middle;
 }
 
-.stateCircle {
+.countryCircle {
   fill: #89bdd3;
   stroke: #e3e3e3;
 }
@@ -55,7 +55,7 @@
 
 /* Mobile Rules */
 @media screen and (max-width: 530px) {
-  .stateText {
+  .countryText {
     display: none;
   }
 
