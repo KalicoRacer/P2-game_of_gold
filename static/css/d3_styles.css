@@ -27,13 +27,13 @@
 .countryText {
   font-family: sans-serif;
   font-size: 10px;
-  fill: #fff;
+  fill: rgba(0, 0, 0, 0.96);
   text-anchor: middle;
 }
 
 .countryCircle {
-  fill: #89bdd3;
-  stroke: #e3e3e3;
+  fill: #b3995d;
+  stroke: #aa0000;
 }
 
 .chart {
