@@ -118,8 +118,8 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesText) {
         case "gold":
             var ylabel = "Gold Medals: ";
             break;
-        case "obesity":
-            var ylabel = "Obese: ";
+        // case "obesity":
+        //     var ylabel = "Obese: ";
     }
 
     var toolTip = d3.tip()
@@ -142,7 +142,7 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesText) {
 }
 
 // Retrieve and parse data from the CSV file and execute everything below
-d3.csv("data/medalsData.csv").then(function(medalsData) {
+d3.csv("../data/medalsData.csv").then(function(medalsData) {
     medalsData.forEach(function(data) {
         data.id = +data.id;
         data.country = data.country;
@@ -245,13 +245,13 @@ d3.csv("data/medalsData.csv").then(function(medalsData) {
         .classed("inactive", true)
         .text("Gold Medals");
 
-    var obesityLabel = yLabelsGroup.append("text")
-        .attr("transform", "rotate(-90)")
-        .attr("y", -70)
-        .attr("x", 0)
-        .attr("value", "obesity") // value to grab for event listener
-        .classed("inactive", true)
-        .text("Obese (%)");
+    // var obesityLabel = yLabelsGroup.append("text")
+    //     .attr("transform", "rotate(-90)")
+    //     .attr("y", -70)
+    //     .attr("x", 0)
+    //     .attr("value", "obesity") // value to grab for event listener
+    //     .classed("inactive", true)
+    //     .text("Obese (%)");
 
     // updateToolTip function above csv import
     var circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
@@ -354,9 +354,9 @@ d3.csv("data/medalsData.csv").then(function(medalsData) {
                     goldLabel
                         .classed("active", false)
                         .classed("inactive", true);
-                    obesityLabel
-                        .classed("active", false)
-                        .classed("inactive", true);
+                    // obesityLabel
+                    //     .classed("active", false)
+                    //     .classed("inactive", true);
                     break;
                 case "gold":
                     total_medalsLabel
@@ -365,20 +365,21 @@ d3.csv("data/medalsData.csv").then(function(medalsData) {
                     goldLabel
                         .classed("active", true)
                         .classed("inactive", false);
-                    obesityLabel
-                        .classed("active", false)
-                        .classed("inactive", true);
-                    break;
-                case "obesity":
-                    total_medalsLabel
-                        .classed("active", false)
-                        .classed("inactive", true);
-                    goldLabel
-                        .classed("active", false)
-                        .classed("inactive", true);
-                    obesityLabel
-                        .classed("active", true)
-                        .classed("inactive", false);
+                    // obesityLabel
+                    //     .classed("active", false)
+                    //     .classed("inactive", true);
+                    ;
+                    // break;
+                // case "obesity":
+                //     total_medalsLabel
+                //         .classed("active", false)
+                //         .classed("inactive", true);
+                //     goldLabel
+                //         .classed("active", false)
+                //         .classed("inactive", true);
+                //     obesityLabel
+                //         .classed("active", true)
+                //         .classed("inactive", false);
                 }
             }
         });
