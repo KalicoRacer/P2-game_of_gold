@@ -6,44 +6,55 @@
   <title>2016 Rio de Janeiro Olympics</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/superhero/bootstrap.min.css">
-
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   <link rel="stylesheet" href="../static/css/style.css">
   <link rel="stylesheet" href="../static/css/d3_styles.css">
+  <link rel="shortcut icon" href="">
 </head>
 
 <body>
-  <div class="wrapper">
+  <div id="grad" class="wrapper" style="background-color: rgb(230, 240, 253)">
     <nav class="navbar navbar-default">
-      <div class="container-fluid">
+      <div class="container-fluid"> 
         <div class="navbar-header">
-          <a class="navbar-brand" href="index.html">Rio de Janeiro Olympics</a>
+          <a class="navbar-brand" href="#">Rio de Janeiro Olympics</a>
         </div>
       </div>
     </nav>
-    <div class="hero text-center" style="color: #000000">
-      <h1>2016 Rio de Janeiro Olympics</h1>
-      <p>It's all about the Medals!</p>
+    <div class="hero text-center" style="color: rgb(0, 0, 0)">
+      <h1 class="introtitle" style="font-family: Geneva,Tahoma,Verdana,sans-serif;font-weight: 900; color: #2B9935">2016 Rio de Janeiro Olympics</h1>
+      <p class="introtitle" style="font-family: Geneva,Tahoma,Verdana,sans-serif;font-weight: 900; color:#FCCC06; font-size: 48px">It's all about the Medals!</p>
     </div>
-
+    
     <div class="container">
       <div class="row">
         <div class="col-xs-12 col-md-12">
-          <h1>Lets Look at How the Medals Move</h1>
-          <h5>Click each axis label to see how the data changes</53>
+          <h1 style="color: black; font-weight: bolder" >Lets Look at How the Medals Move</h1>
+          <h5 style="color: black; font-weight: bolder" >Click each axis label to see how the data changes</53>
         </div>
       </div>
       <div class="row">
-        <div class="col-xs-12  col-md-9">
-          <div id="multi_chart">
-          </div>
+        <div class="col-xs-12  col-md-12">
+          <div id="multi_chart"></div>
+          <h3 style="color: black; font-weight: bolder; font-style: italic">Correlations between Population, GDP, Num. of Athletes and total Medals Count</h3>
+          <br>
+          <br>
+          <br>
         </div>
-      </div>
-      <div class="row">
+        <hr>
+
+
+
         <div class="col-xs-12  col-md-9">
-          <div class="article">
-            <h2>Correlations Discovered Between Population, GDP, Num. of Athletes and the Medals Count</h2>
-          </div>
-        </div>
+          <div id="plot"></div>
+          <br>
+          <br>
+          <br>
+        </div>  
+        <hr>
+        <div class="col-xs-12  col-md-9">
+          <div id="topCountries"></div>
+        </div>       
       </div>
     </div>
 
@@ -54,7 +65,9 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.9.1/d3-tip.js"></script>
-  <script type="text/javascript" src="../static/js/d3_chart.js"></script>
+  <script src="{{ url_for('static', filename='js/d3_chart.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/BMI.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/TopCountries.js') }}"></script>
 
 </body>
 

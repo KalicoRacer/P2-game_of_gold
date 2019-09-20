@@ -17,13 +17,9 @@ from flask import Flask, jsonify, render_template
 
 app = Flask(__name__)
 
-# #app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///gold_blooded.sqlite"
-# #app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-# #conn = sqlite3.connect("gold_blooded.sqlite")
-# ​
-#Use This connection 2 line below rather than the above connection way
+
 engine = create_engine(
-'sqlite:///data/gold_blooded.sqlite',
+'sqlite:///static/data/gold_blooded.sqlite',
 connect_args={'check_same_thread': False}
 )
 conn = engine.connect()
@@ -44,7 +40,8 @@ df_bmi = pd.read_sql_query("select nationality, weight/(height* height) BMI, gol
 df_bmi_grouped = pd.read_sql_query("select round(weight/(height* height),0) BMI, sum(gold) + sum(silver) + sum(bronze) as TotalMedals \
     from Athletes where gold + silver + bronze > 0 and height > 0 and weight > 0 \
     group by weight/(height* height)", conn)
-
+df_bmigrouped = df_bmi_grouped.groupby(['BMI']).sum()
+df_bmigrouped = df_bmigrouped.reset_index()
 
 # dfTop20.to_csv(r'C:\Users\tepa7\Desktop\HW\P2-game_of_gold\Top20.csv')
 
@@ -68,12 +65,6 @@ def dashboard():
 def CountryMedals():
     df_list = Tharunya_athletes.values.tolist()
     df_json = jsonify(df_list)
-    # df_json2 = Tharunya_athletes.to_json()
-    # countries = []
-    # for c in cc:
-    #     country = {'country_full_name': c[''], '': }
-    #     countries.append(county)
-    # return jsonify(countries)
 
     return df_json
 
@@ -105,7 +96,7 @@ def gender():
 
 @app.route("/bmi")
 def bmi():
-    df_list = df_bmi_grouped.values.tolist()
+    df_list = df_bmigrouped.values.tolist()
     df_json = jsonify(df_list)
     return df_json
     

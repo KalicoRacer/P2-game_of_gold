@@ -142,7 +142,7 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesText) {
 }
 
 // Retrieve and parse data from the CSV file and execute everything below
-d3.csv("../data/medalsData.csv").then(function(medalsData) {
+d3.csv("../static/data/medalsData.csv").then(function(medalsData) {
     medalsData.forEach(function(data) {
         data.id = +data.id;
         data.country = data.country;

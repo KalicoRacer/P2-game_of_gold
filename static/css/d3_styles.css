@@ -4,6 +4,8 @@
   text-anchor: middle;
 }
 
+}
+
 .active {
   font-weight: bold;
   fill: #000;
@@ -11,6 +13,13 @@
   text-anchor: middle;
 }
 
+#grad {
+  background-image: linear-gradient(#FCCC06,white, #2B9935);
+}
+
+.container {
+  max-width: 100%;
+}
 .inactive {
   font-weight: lighter;
   fill: #c9c9c9;
