@@ -1,4 +1,4 @@
-,code,country,Population,GDP,TotalAthletes,Gold,Silver,Bronze,Total
+id,code,country,population,gdp,athletes,gold,silver,bronze,total_medals
 187,USA,United States,321418820.0,56116.0,567,139,54,71,264
 72,GER,Germany,81413145.0,41313.0,441,49,44,67,160
 68,GBR,United Kingdom,65138232.0,43876.0,374,64,55,26,145
